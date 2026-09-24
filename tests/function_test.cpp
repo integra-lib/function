@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <integra/function.hpp>
+#include <hwlib/utilities/function.hpp>
 #include <utility>
 
 namespace
@@ -13,33 +13,33 @@ int Triple(int value)
 
 TEST(FunctionTest, DefaultConstructedIsEmpty)
 {
-    const integra::Function<int(int)> fn;
+    const hwlib::utilities::Function<int(int)> fn;
     EXPECT_FALSE(static_cast<bool>(fn));
 }
 
 TEST(FunctionTest, NullptrConstructedIsEmpty)
 {
-    const integra::Function<int(int)> fn{nullptr};
+    const hwlib::utilities::Function<int(int)> fn{nullptr};
     EXPECT_FALSE(static_cast<bool>(fn));
 }
 
 TEST(FunctionTest, CallsALambda)
 {
-    integra::Function<int(int)> fn = [](int value) { return value + 1; };
+    hwlib::utilities::Function<int(int)> fn = [](int value) { return value + 1; };
     ASSERT_TRUE(static_cast<bool>(fn));
     EXPECT_EQ(fn(41), 42);
 }
 
 TEST(FunctionTest, CallsAFreeFunction)
 {
-    integra::Function<int(int)> fn = &Triple;
+    hwlib::utilities::Function<int(int)> fn = &Triple;
     EXPECT_EQ(fn(5), 15);
 }
 
 TEST(FunctionTest, CapturesByValue)
 {
-    const int base                 = 10;
-    integra::Function<int(int)> fn = [base](int value) { return base + value; };
+    const int base                          = 10;
+    hwlib::utilities::Function<int(int)> fn = [base](int value) { return base + value; };
     EXPECT_EQ(fn(5), 15);
 }
 
@@ -48,7 +48,7 @@ TEST(FunctionTest, CapturesByValue)
 // defect stayed invisible until something actually assigned into a Function.
 TEST(FunctionTest, AssignmentReplacesTheCallable)
 {
-    integra::Function<int(int)> fn = [](int value) { return value + 1; };
+    hwlib::utilities::Function<int(int)> fn = [](int value) { return value + 1; };
     EXPECT_EQ(fn(1), 2);
 
     fn = [](int value) { return value * 2; };
@@ -58,7 +58,7 @@ TEST(FunctionTest, AssignmentReplacesTheCallable)
 
 TEST(FunctionTest, AssignmentIntoAnEmptyFunction)
 {
-    integra::Function<int(int)> fn;
+    hwlib::utilities::Function<int(int)> fn;
     ASSERT_FALSE(static_cast<bool>(fn));
 
     fn = &Triple;
@@ -68,8 +68,8 @@ TEST(FunctionTest, AssignmentIntoAnEmptyFunction)
 
 TEST(FunctionTest, MoveTransfersTheCallable)
 {
-    integra::Function<int(int)> source = [](int value) { return value + 1; };
-    integra::Function<int(int)> target = std::move(source);
+    hwlib::utilities::Function<int(int)> source = [](int value) { return value + 1; };
+    hwlib::utilities::Function<int(int)> target = std::move(source);
 
     ASSERT_TRUE(static_cast<bool>(target));
     EXPECT_EQ(target(41), 42);

@@ -4,7 +4,7 @@
 #include <memory>
 #include <utility>
 
-namespace integra
+namespace hwlib::utilities
 {
 
 template<typename UnusedType>
@@ -89,4 +89,4 @@ private:
     std::unique_ptr<IFunctionHolderBase> m_invoker{};
 };
 
-} // namespace integra
+} // namespace hwlib::utilities
